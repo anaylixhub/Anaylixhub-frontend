@@ -10,8 +10,6 @@ const SignUp = () => {
 
   const [form, setForm] = useState({
     packages: "",
-    sponserName: "",
-    sponserId: "",
     fullName: "",
     emailId: "",
     confirmEmail: "",
@@ -52,8 +50,6 @@ const SignUp = () => {
       "http://localhost:3000/auth/register",
       {
         fullName: form.fullName,
-        sponserName: form.sponserName,
-        sponserId: form.sponserId,
         emailId: form.emailId,
         password: form.password,
         mobile: form.mobile,
@@ -93,14 +89,15 @@ const SignUp = () => {
       </div>
 
       <div className="max-w-3xl mx-auto mt-10 bg-white p-10 rounded-xl shadow-xl border border-purple-100">
-        <h2 className="text-3xl font-bold text-gray-800">Create Your Account</h2>
+        <h2 className="text-3xl font-bold text-gray-800">
+          Create Your Account
+        </h2>
         <p className="text-gray-600 mt-2 mb-6">
           Welcome! Fill out the details below to get started.
         </p>
 
         {/* FORM */}
         <form className="space-y-5" onSubmit={handleSubmit}>
-
           {/* PACKAGE */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
@@ -119,24 +116,6 @@ const SignUp = () => {
             </select>
           </div>
 
-          {/* SPONSER ID + NAME */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              name="sponserId"
-              value={form.sponserId}
-              onChange={handleChange}
-              className="border p-3 rounded-lg"
-              placeholder="Sponsor ID"
-            />
-            <input
-              name="sponserName"
-              value={form.sponserName}
-              onChange={handleChange}
-              className="border p-3 rounded-lg"
-              placeholder="Sponsor Name"
-            />
-          </div>
-
           {/* FULL NAME */}
           <input
             name="fullName"
@@ -144,6 +123,7 @@ const SignUp = () => {
             onChange={handleChange}
             className="border p-3 rounded-lg w-full"
             placeholder="Full Name"
+            required
           />
 
           {/* EMAIL + CONFIRM EMAIL */}
@@ -154,6 +134,7 @@ const SignUp = () => {
               onChange={handleChange}
               className="border p-3 rounded-lg"
               placeholder="Enter Email"
+              required
             />
             <input
               name="confirmEmail"
@@ -171,6 +152,7 @@ const SignUp = () => {
             onChange={handleChange}
             className="border p-3 rounded-lg w-full"
             placeholder="Mobile Number"
+            required
           />
 
           {/* STATE */}
@@ -201,6 +183,7 @@ const SignUp = () => {
               onChange={handleChange}
               className="border p-3 rounded-lg w-full"
               placeholder="Password"
+              required
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
@@ -219,6 +202,7 @@ const SignUp = () => {
               onChange={handleChange}
               className="border p-3 rounded-lg w-full"
               placeholder="Confirm Password"
+              required
             />
             <span
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
