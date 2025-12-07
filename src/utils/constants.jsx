@@ -1,4 +1,5 @@
 export const BASE_URL =
-  location.hostname === "localhost"
-    ? "http://localhost:3000"
-    : "https://anaylixbackend.onrender.com";
+//   location.hostname === "localhost"
+//     ? "http://localhost:3000"
+    // : 
+    "https://anaylixbackend.onrender.com";
