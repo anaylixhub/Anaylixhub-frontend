@@ -4,148 +4,142 @@ import VideoPlayer from "./VideoPlayer";
 import Navbar from "../components/Navbar";
 
 const LandingPage = () => {
+  const masteryItems = [
+    "Master Video Editing",
+    "Graphic Designing",
+    "Script Writing",
+    "Social Media Management",
+    "Turn Your Free Time into Income"
+  ];
+
   return (
     <div>
       <Navbar type={"false"} />
 
+      {/* PAGE BACKGROUND */}
       <div className="min-h-screen bg-gradient-to-br from-black via-[#1c1403] to-[#000000] text-white font-sans pt-20">
 
-        {/* Hero Section */}
-        <div
-          className="
-  max-w-6xl mx-auto px-5 py-10 
-  grid grid-cols-1 md:grid-cols-[1.1fr_1.6fr] 
-  gap-10 
-  items-start md:items-center   /* FIX ALIGNMENT */
-"
+        {/* HERO SECTION */}
+<div className="w-full bg-gradient-to-br from-black via-[#120d03] to-black pt-24 pb-20 px-44">
+  <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+
+    {/* LEFT SIDE CONTENT */}
+    <div className="space-y-6 lg:pr-10">
+      <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-white">
+        Digital Skill <br />
+        Mastery
+        <br />
+        <span className="text-yellow-400 block mt-3">Only ₹3499</span>
+      </h1>
+
+      <p className="text-gray-300 text-lg max-w-md">
+        Stop just scrolling. Start earning! 💰
+      </p>
+
+      {/* CTA BUTTON*/}
+      <Link
+        to="/signup"
+        className="inline-block mt-4 relative p-[2px] rounded-lg bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 group"
+      >
+        <span
+          className="block px-8 py-4 bg-[#1c1607] rounded-lg text-white font-bold text-lg group-hover:bg-[#2a210a] transition"
         >
-          {/* RIGHT SIDE - VIDEO */}
-          <div className="order-1 md:order-2 flex items-center">
-            <div className="w-full rounded-xl overflow-hidden shadow-2xl border border-gray-700 md:ml-6">
-              <VideoPlayer />
-            </div>
-          </div>
+          Get Instant Access for ₹3499
+        </span>
+      </Link>
+    </div>
 
-          {/* LEFT SIDE CONTENT */}
-          <div className="order-2 md:order-1 flex flex-col justify-center">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              Instagram <br />
-              Automation <br />
-              Mastery – Just <span className="text-yellow-400">₹3499</span>
-            </h1>
-
-            <p className="mt-6 text-gray-300 text-lg max-w-md">
-              Learn how to automate reels, grow followers fast, and monetize
-              Instagram daily.
-            </p>
-
-            {/* BUTTON */}
-            <Link
-              to="/home"
-              className="
-        inline-block mt-8 
-        relative p-[2px] rounded-md
-        bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 
-        group
-      "
-            >
-              <span
-                className="
-          relative block w-full h-full p-4
-          bg-[#1c1607]
-          rounded-md
-          text-center text-white font-bold text-xl
-          transition group-hover:bg-[#2a210a]
-        "
-              >
-                Get Instant Access for ₹3499
-              </span>
-            </Link>
-
-            <div className="flex items-center gap-3 mt-6 opacity-80">
-              <img
-                src="https://i.postimg.cc/6qk4RvqG/people.jpg"
-                alt="students"
-                className="w-12 h-12 rounded-md object-cover"
-              />
-              <span className="text-gray-300 font-semibold">
-                1000+ Students Already Learning – Join Them & Start Earning
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* WHAT YOU WILL LEARN SECTION */}
-        <div className="max-w-6xl mx-auto mt-20 text-center px-5">
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-12">
-            MASTERY PACK
-          </h2>
-
-         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-  {[
-    "All course access",
-    "1:1 Mentorship",
-    "Portfolio + First Client Guidance",
-    "0 to 30k Complete Roadmap"
-  ].map((text, i) => (
-    <div 
-      key={i}
-      className="
-        p-[2px] rounded-xl 
-        bg-gradient-to-r from-yellow-500 to-orange-500 
-        h-full
-      "
-    >
+    {/* RIGHT SIDE VIDEO */}
+    <div className="flex justify-center lg:justify-end">
       <div className="
-        h-full bg-[#111111] rounded-xl p-6 
-        shadow-[0_0_15px_rgba(255,180,0,0.15)]
-        hover:bg-[#161616]
-        transition
+        w-full 
+        max-w-[620px]      /* INCREASED VIDEO WIDTH */
+        rounded-2xl 
+        overflow-hidden 
+        bg-[#00000050] 
+        backdrop-blur 
+        shadow-[0_0_35px_rgba(0,0,0,0.45)] 
+        border border-[#2b2b2b]
       ">
-        <div className="flex items-start gap-4">
-          <span className="text-yellow-400 text-3xl font-bold">₹</span>
-          <p className="text-white font-semibold text-lg leading-snug">
-            {text}
-          </p>
-        </div>
+        <VideoPlayer />
       </div>
     </div>
-  ))}
+
+  </div>
 </div>
 
 
+        {/* MASTERY PACK */}
+        <div className="max-w-6xl mx-auto mt-20 text-center px-5">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-yellow-300 drop-shadow-md">
+            THE MASTERY PACK
+          </h2>
 
-          {/* ENROLL NOW BUTTON */}
+          <p className="text-gray-400 max-w-xl mx-auto mt-2">
+            Learn the most in-demand skills and start earning from Day 1.
+          </p>
+
+          {/* FEATURE GRID */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mt-12">
+
+  {masteryItems.map((text, i) => (
+    <div
+      key={i}
+      className="
+        p-[3px] 
+        rounded-2xl 
+        bg-gradient-to-r from-yellow-400 to-orange-500 
+        shadow-[0_0_30px_rgba(255,180,0,0.25)]
+        hover:scale-[1.03] 
+        transition
+      "
+    >
+      <div
+        className="
+          bg-[#111111] 
+          rounded-2xl 
+          h-40 
+          flex 
+          items-center 
+          px-5 
+          gap-4
+        "
+      >
+        {/* STAR ICON */}
+        <span className="text-yellow-400 text-3xl">⭐</span>
+
+        {/* TITLE */}
+        <p className="text-white font-semibold text-lg leading-snug">
+          {text}
+        </p>
+      </div>
+    </div>
+  ))}
+
+</div>
+
+          {/* ENROLL BUTTON */}
           <Link
-            to="/home"
-            className="
-    mt-12 
-    block w-full mx-auto 
-    relative p-[2px] rounded-lg
-    bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500
-    group
-  "
+            to="/signup"
+            className="mt-12 inline-block relative p-[2px] rounded-xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 group"
           >
             <span
-              className="
-      block w-full 
-      bg-[#1d1507]
-      text-white font-bold text-xl 
-      py-4
-      rounded-lg 
-      text-center
-      transition 
-      group-hover:bg-[#2a210a]
-    "
+              className="block w-full bg-[#1d1507] text-white font-bold text-xl px-10 py-4 rounded-xl text-center group-hover:bg-[#2a210a] transition"
             >
-              Enroll Now – Pay ₹3499 Now
+              Enroll Now – Pay ₹3499
             </span>
           </Link>
         </div>
 
+        {/* ABOUT TEXT */}
+        <div className="max-w-5xl mx-auto mt-16 text-center text-gray-400 px-5 leading-relaxed">
+          Anaylix Hub is your direct path to monetizing your student life.  
+          We teach real, in-demand digital skills with a complete earning roadmap.
+        </div>
+
         {/* FOOTER */}
-        <div className="text-center text-gray-400 text-sm py-10">
-          Copyright © 2025 Knowledge Wave India
+        <div className="text-center text-gray-500 text-sm py-10 mt-10">
+          © 2025 Knowledge Wave India — All Rights Reserved
         </div>
       </div>
     </div>

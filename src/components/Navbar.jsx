@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link,useLocation } from "react-router-dom";
 import axios from "axios";
 import logo from "../assets/logo1.png";
+import { BASE_URL } from "../utils/constants";
 
 const Navbar = ({ type }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -11,7 +12,7 @@ const Navbar = ({ type }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/profile/view", {
+        const res = await axios.get(BASE_URL + "/profile/view", {
           withCredentials: true,
         });
         if (res.data) setIsLoggedIn(true);
@@ -38,7 +39,7 @@ const Navbar = ({ type }) => {
             <div className="hidden md:block">
               {!isLoggedIn ? (
                 <Link
-                  to="/login"
+                  to="/signup"
                   className="bg-gradient-to-r from-purple-500 to-cyan-400
                            text-white font-semibold px-7 py-3 rounded-full 
                            shadow-lg hover:scale-105 transition"

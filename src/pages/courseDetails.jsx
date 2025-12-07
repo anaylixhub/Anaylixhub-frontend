@@ -89,7 +89,7 @@ const CourseDetails = () => {
                 to={`/buy/${course._id}`}
                 className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
               >
-                Buy Course – ₹{course.price}
+                Buy Now
               </Link>
             ) : (
               <Link

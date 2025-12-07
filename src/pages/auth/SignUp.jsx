@@ -80,7 +80,7 @@ const SignUp = () => {
 };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-purple-50 pt-32">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-purple-50 pt-10">
       <div className="max-w-5xl mx-auto px-6">
         <h1 className="text-4xl font-bold text-purple-700">Sign Up</h1>
         <p className="text-gray-600 mt-1">

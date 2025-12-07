@@ -58,7 +58,7 @@ const LogIn = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-purple-100 to-purple-50 flex flex-col items-center pt-32">
+    <div className="min-h-screen w-full bg-gradient-to-r from-purple-100 to-purple-50 flex flex-col items-center pt-10">
       <div className="w-full max-w-5xl px-6">
         <h1 className="text-4xl font-bold text-gray-800">Login</h1>
         <p className="text-gray-500 mt-2">Home &gt; Login</p>
