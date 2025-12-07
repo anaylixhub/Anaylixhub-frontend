@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { PlayCircle } from "lucide-react";
 
 const Learning = () => {
   const { id } = useParams();
@@ -12,7 +13,6 @@ const Learning = () => {
       const res = await axios.get(`http://localhost:3000/course/${id}`);
       setCourse(res.data);
 
-      // Default: First lecture
       const first = res.data.modules[0]?.lectures[0];
       if (first) setCurrentVideo(first);
     };
@@ -23,95 +23,106 @@ const Learning = () => {
   if (!course) return <p className="text-center mt-20 text-lg">Loading...</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      
-      {/* Top Sticky Course Title */}
-      <div className="bg-white shadow-md py-4 px-6 sticky top-0 z-20 border-b">
+    <div className="min-h-screen bg-[#F5F7FA]">
+
+      {/* TOP HEADER */}
+      <div className="bg-white px-36 py-5 shadow-sm border-b sticky top-0 z-20">
         <h1 className="text-2xl font-bold text-gray-900">{course.title}</h1>
-        <p className="text-gray-500 text-sm">{course.modules.length} Modules • {course.totalLectures} Lectures</p>
+        <p className="text-sm text-gray-500 mt-1">
+          {course.modules.length} Modules • {course.totalLectures} Lectures
+        </p>
       </div>
 
-      <div className="max-w-7xl mx-auto p-6 flex gap-6">
+      {/* MAIN CONTENT */}
+      <div className="max-w-7xl mx-auto p-6 flex gap-8">
 
-        {/* LEFT: Video Player */}
-        <div className="flex-1 bg-white rounded-xl shadow-md p-4 border">
+        {/* LEFT - VIDEO PLAYER SECTION */}
+        <div className="flex-1">
+          
+          {/* Video Card */}
+          <div className="bg-white shadow-md rounded-2xl border p-5">
+            <div className="w-full h-[460px] bg-black rounded-xl overflow-hidden">
+              <video
+                src={currentVideo?.videoUrl}
+                controls
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-          {currentVideo ? (
-            <>
-              {/* Video */}
-              <div className="w-full h-[450px] bg-black rounded-lg overflow-hidden">
-                <video
-                  src={currentVideo.videoUrl}
-                  controls
-                  className="w-full h-full object-cover"
-                />
-              </div>
+            {/* Video Title */}
+            <h2 className="text-xl font-semibold text-gray-900 mt-5">
+              {currentVideo?.title}
+            </h2>
 
-              {/* Video Title */}
-              <h2 className="text-xl font-bold mt-4 text-gray-900">
-                {currentVideo.title}
-              </h2>
-              <p className="text-gray-600 mt-1">{currentVideo.duration}</p>
+            <p className="text-gray-500 text-sm mt-1">
+              Duration: {currentVideo?.duration}
+            </p>
 
-              {/* Description */}
-              <p className="text-gray-700 mt-3 leading-relaxed">
-                {currentVideo.description || "No description available"}
-              </p>
-            </>
-          ) : (
-            <p className="text-gray-500">Select a lecture to start learning</p>
-          )}
-
+            {/* Description */}
+            <p className="text-gray-700 mt-4 leading-relaxed text-[15px]">
+              {currentVideo?.description || "No description available"}
+            </p>
+          </div>
         </div>
 
-        {/* RIGHT: Modules */}
-        <div className="w-96 bg-white rounded-xl shadow-md border p-4 overflow-y-auto max-h-[85vh] sticky top-24">
+        {/* RIGHT - MODULE LIST SECTION */}
+        <div className="w-[360px] bg-white shadow-md rounded-2xl border p-5 h-fit sticky top-24 max-h-[85vh] overflow-y-auto">
 
-          <h2 className="text-xl font-bold mb-4 text-gray-900">Course Content</h2>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Course Content
+          </h3>
 
-          {course.modules.map((mod, index) => (
-            <div key={index} className="mb-6">
+          {course.modules.map((mod, i) => (
+            <div key={i} className="mb-6">
 
-              <h3 className="font-semibold text-lg mb-2 text-blue-700">
-                {index + 1}. {mod.moduleTitle}
-              </h3>
+              <h4 className="font-semibold text-gray-800 mb-3 text-[17px]">
+                {i + 1}. {mod.moduleTitle}
+              </h4>
 
               <ul className="space-y-2">
-                {mod.lectures.map((lec, lecIndex) => {
+                {mod.lectures.map((lec, j) => {
                   const isActive = currentVideo?._id === lec._id;
 
                   return (
                     <li
-                      key={lecIndex}
+                      key={j}
                       onClick={() => setCurrentVideo(lec)}
-                      className={`
-                        p-2 rounded-lg flex justify-between items-center cursor-pointer transition
-                        ${isActive ? "bg-blue-100 border border-blue-400" : "bg-gray-100 hover:bg-gray-200"}
+                      className={`flex justify-between items-center p-3 rounded-lg cursor-pointer border transition
+                        ${
+                          isActive
+                            ? "bg-blue-50 border-blue-400 border-l-4"
+                            : "bg-gray-50 hover:bg-gray-100 border-gray-200"
+                        }
                       `}
                     >
-                      <div className="flex items-center gap-3">
-                        {/* Lecture Thumbnail */}
-                        {lec.thumbnail ? (
-                          <img
-                            src={lec.thumbnail}
-                            alt={lec.title}
-                            className="w-12 h-12 rounded-md object-cover"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 bg-gray-300 rounded-md"></div>
-                        )}
+                      <div className="flex items-start gap-3">
 
-                        <span className="font-medium text-gray-800">
-                          {lecIndex + 1}. {lec.title}
-                        </span>
+                        {/* Play Icon */}
+                        <PlayCircle
+                          size={22}
+                          className={`${
+                            isActive ? "text-blue-600" : "text-gray-500"
+                          } mt-1`}
+                        />
+
+                        <div>
+                          <p
+                            className={`text-[15px] font-medium ${
+                              isActive ? "text-blue-700" : "text-gray-800"
+                            }`}
+                          >
+                            {j + 1}. {lec.title}
+                          </p>
+
+                          <span className="text-xs text-gray-500">
+                            ⏳ {lec.duration}
+                          </span>
+                        </div>
                       </div>
-
-                      <span className="text-gray-600 text-sm">⏳ {lec.duration}</span>
                     </li>
                   );
                 })}
               </ul>
-
             </div>
           ))}
 

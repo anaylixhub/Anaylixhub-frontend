@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CourseCard from "../components/CourseCard";
+import { Link } from "react-router-dom";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Your backend endpoint (modify if needed)
   const API_URL = "http://localhost:3000/course/all";
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const Courses = () => {
         const response = await fetch(API_URL);
         const data = await response.json();
 
-        setCourses(data); 
+        setCourses(data);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -30,11 +30,34 @@ const Courses = () => {
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-white to-gray-100 px-6 pt-10 text-gray-900">
 
-      <div className="max-w-7xl mx-auto text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold">All Courses</h1>
-        <p className="text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
-          Explore our expertly crafted courses designed to help you grow and excel.
-        </p>
+      {/* HEADER */}
+      <div className="max-w-7xl mx-auto flex justify-between items-center mb-16">
+
+        {/* TEXT */}
+        <div className="text-center mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold">All Courses</h1>
+          <p className="text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
+            Explore our expertly crafted courses designed to help you grow and excel.
+          </p>
+        </div>
+
+        {/* MY COURSES BUTTON */}
+        <Link
+          to="/my-courses"
+          className="px-5 py-2 bg-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 transition hidden md:block"
+        >
+          My Courses →
+        </Link>
+      </div>
+
+      {/* If mobile screen, show button inside section */}
+      <div className="md:hidden text-center mb-8">
+        <Link
+          to="/my-courses"
+          className="px-5 py-2 bg-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 transition"
+        >
+          My Courses →
+        </Link>
       </div>
 
       {/* LOADING */}
@@ -59,7 +82,6 @@ const Courses = () => {
       {!loading && courses.length === 0 && (
         <p className="text-center text-gray-500 text-xl">No courses available.</p>
       )}
-
     </div>
   );
 };

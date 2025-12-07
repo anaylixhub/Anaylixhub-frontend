@@ -46,10 +46,13 @@ const CourseDetails = () => {
           <div className="w-full h-[350px] bg-gray-200 rounded-xl overflow-hidden shadow-sm border border-gray-300">
             {course.trailerVideo ? (
               <video
-                src={course.trailerVideo}
-                controls
-                className="w-full h-full object-cover"
-              />
+  src={course.trailerVideo}
+  autoPlay
+  muted
+  playsInline
+  controls
+  className="w-full h-full object-cover"
+/>
             ) : (
               <img
                 src={course.thumbnail}
@@ -80,21 +83,21 @@ const CourseDetails = () => {
 
           {/* BUY / START BUTTON */}
           <div className="mt-5">
-            {/* {!isPurchased ? (
+            {!isPurchased ? (
               <Link
                 to={`/buy/${course._id}`}
                 className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
               >
                 Buy Course – ₹{course.price}
               </Link>
-            ) : ( */}
+            ) : (
               <Link
                 to={`/learn/${course._id}`}
                 className="px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition"
               >
                 Start Learning →
               </Link>
-            {/* )} */}
+             )}
           </div>
 
           {/* MODULE LIST */}

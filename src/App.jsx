@@ -20,9 +20,10 @@ import TermsCondition from './pages/legal/TermsCondition.jsx';
 import LegalDocuments from './pages/legal/LegalDocuments.jsx';
 import PricingPolicy from './pages/legal/PricingPolicy.jsx';
 import AddCourse from './admin/AddCourse.jsx';
-import CourseDetails from './pages/courseDetails.jsx';
+import CourseDetails from './pages/CourseDetails.jsx';
 import Learning from './pages/Learning.jsx';
 import EditCourse from './pages/EditCourse.jsx';
+import MyCourses from './pages/PurchasedCourses.jsx';
 
 export default function App() {
   return (
@@ -44,7 +45,8 @@ export default function App() {
             <Route path='/about' element={<AboutUs/>} />
             <Route path='/profile' element={<Profile />} />
             <Route path="/addcourse" element={<AddCourse />} />
-            <Route path="/editcourse" element={<EditCourse />} />
+            <Route path="/editcourse/:id" element={<EditCourse />} />
+            <Route path="/my-courses" element={<MyCourses />} />
 
           <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/termsCondition" element={<TermsCondition />} />

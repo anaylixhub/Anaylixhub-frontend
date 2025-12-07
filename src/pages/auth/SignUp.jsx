@@ -9,9 +9,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
-    packages: "",
-    sponserName: "",
-    sponserId: "",
+    courses: "",
     fullName: "",
     emailId: "",
     confirmEmail: "",
@@ -42,8 +40,8 @@ const SignUp = () => {
     alert("Passwords do not match");
     return;
   }
-  if (!form.packages || form.packages === "Select Package") {
-    alert("Please select a package");
+  if (!form.courses || form.courses === "Select Course") {
+    alert("Please select a course");
     return;
   }
 
@@ -52,13 +50,10 @@ const SignUp = () => {
       "http://localhost:3000/auth/register",
       {
         fullName: form.fullName,
-        sponserName: form.sponserName,
-        sponserId: form.sponserId,
         emailId: form.emailId,
         password: form.password,
         mobile: form.mobile,
         state: form.state,
-        packages: [form.packages],
       },
       {
         headers: { "Content-Type": "application/json" },
@@ -101,41 +96,24 @@ const SignUp = () => {
         {/* FORM */}
         <form className="space-y-5" onSubmit={handleSubmit}>
 
-          {/* PACKAGE */}
+          {/* COURSE */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">
-              Select Package
+              Select Course
             </label>
             <select
-              name="packages"
-              value={form.packages}
+              name="Courses"
+              value={form.Courses}
               onChange={handleChange}
               className="w-full border border-gray-300 p-3 rounded-lg"
             >
-              <option>Select Package</option>
-              <option value="Basic">Basic</option>
-              <option value="Standard">Standard</option>
-              <option value="Premium">Premium</option>
+              <option>Select Course</option>
+              <option value="Video Editing">Video Editing</option>
+              <option value="Graphic Designing">Graphic Designing</option>
             </select>
           </div>
 
-          {/* SPONSER ID + NAME */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              name="sponserId"
-              value={form.sponserId}
-              onChange={handleChange}
-              className="border p-3 rounded-lg"
-              placeholder="Sponsor ID"
-            />
-            <input
-              name="sponserName"
-              value={form.sponserName}
-              onChange={handleChange}
-              className="border p-3 rounded-lg"
-              placeholder="Sponsor Name"
-            />
-          </div>
+          
 
           {/* FULL NAME */}
           <input
