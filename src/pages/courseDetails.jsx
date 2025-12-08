@@ -2,132 +2,166 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants.jsx";
+import { useSelector } from "react-redux";
 
 const CourseDetails = () => {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isPurchased, setIsPurchased] = useState(false);
+  const [isUserSubscribed, setIsUserSubscribed] = useState(false);
+  const user = useSelector((state) => state.user);
 
+  // ----------------------
+  // CHECK SUBSCRIPTION STATUS
+  // ----------------------
+  const verifyUserSubscription = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/premium/verify", {
+        withCredentials: true,
+      });
+
+      if (res.data.isSubscribed) {
+        setIsUserSubscribed(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ----------------------
+  // FETCH COURSE + CHECK SUBSCRIPTION
+  // ----------------------
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/course/${id}`);
         setCourse(res.data);
 
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user) {
-          const purchased = await axios.get(
-            `${BASE_URL}/purchase/check/${user._id}/${id}`
-          );
-          setIsPurchased(purchased.data.purchased);
+        if (!user) {
+          setIsUserSubscribed(false);
+          setLoading(false);
+          return;
         }
 
+        await verifyUserSubscription();
         setLoading(false);
       } catch (err) {
         console.log(err);
+        setLoading(false);
       }
     };
 
     fetchCourse();
-  }, [id]);
+  }, [id, user]);
+
+  // ----------------------
+  // HANDLE BUY BUTTON
+  // ----------------------
+  const handleBuy = async () => {
+    const order = await axios.post(
+      BASE_URL + "/payment/create",
+      {},
+      { withCredentials: true }
+    );
+
+    const { amount, keyId, currency, notes, orderId } = order.data;
+
+    const options = {
+      key: keyId,
+      amount,
+      currency,
+      name: "Anaylixhub",
+      description: "Subscription Payment",
+      order_id: orderId,
+      prefill: {
+        name: notes.fullName,
+        email: user?.emailId || "example@gmail.com",
+        contact: user?.mobile || "0000000000",
+      },
+      theme: { color: "#F37254" },
+      handler: verifyUserSubscription,
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
 
   if (loading) return <p className="text-center text-lg">Loading...</p>;
   if (!course) return <p>Course not found.</p>;
 
   return (
     <div className="bg-gray-100 min-h-screen pt-10 pb-10">
-
       <div className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-        {/* LEFT SECTION - Trailer + Description */}
+        {/* LEFT */}
         <div className="lg:col-span-2 space-y-6">
 
-          {/* Video Card */}
-          <div className="w-full h-[350px] bg-gray-200 rounded-xl overflow-hidden shadow-sm border border-gray-300">
+          {/* Trailer */}
+          <div className="w-full h-[350px] bg-gray-200 rounded-xl overflow-hidden shadow-sm border">
             {course.trailerVideo ? (
               <video
-  src={course.trailerVideo}
-  autoPlay
-  muted
-  playsInline
-  controls
-  className="w-full h-full object-cover"
-/>
-            ) : (
-              <img
-                src={course.thumbnail}
-                alt={course.title}
+                src={course.trailerVideo}
+                autoPlay
+                muted
+                playsInline
+                controls
                 className="w-full h-full object-cover"
               />
+            ) : (
+              <img src={course.thumbnail} className="w-full h-full object-cover" />
             )}
           </div>
 
-          {/* Description Box */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">About this course</h2>
-            <p className="text-gray-700 leading-relaxed text-[17px]">
-              {course.fullDescription}
-            </p>
+          {/* About */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border">
+            <h2 className="text-2xl font-bold mb-3">About this course</h2>
+            <p>{course.fullDescription}</p>
           </div>
 
         </div>
 
-        {/* RIGHT SECTION - Title + Buy + Modules */}
-        <div className="bg-white shadow-md rounded-xl p-6 h-fit sticky top-24 max-h-[85vh] overflow-y-auto border border-gray-200">
+        {/* RIGHT */}
+        <div className="bg-white shadow-md rounded-xl p-6 h-fit sticky top-24 border">
 
           {/* TITLE */}
-          <h1 className="text-3xl font-bold text-gray-900 leading-tight">
-            {course.title}
-          </h1>
-          <p className="text-purple-600 font-medium mt-1">{course.category}</p>
+          <h1 className="text-3xl font-bold">{course.title}</h1>
+          <p className="text-purple-600 mt-1">{course.category}</p>
 
-          {/* BUY / START BUTTON */}
+          {/* BUY / START */}
           <div className="mt-5">
-            {!isPurchased ? (
-              <Link
-                to={`/buy/${course._id}`}
-                className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+            {!isUserSubscribed ? (
+              <button
+                onClick={handleBuy}
+                className="px-6 py-3 bg-blue-600 text-white rounded-full"
               >
                 Buy Now
-              </Link>
+              </button>
             ) : (
               <Link
                 to={`/learn/${course._id}`}
-                className="px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition"
+                className="px-6 py-3 bg-green-600 text-white rounded-full"
               >
                 Start Learning →
               </Link>
-             )}
+            )}
           </div>
 
-          {/* MODULE LIST */}
-          <h2 className="text-xl font-bold mt-8 mb-4 text-gray-800">
-            Course Content
-          </h2>
+          {/* MODULES */}
+          <h2 className="text-xl font-bold mt-8 mb-4">Course Content</h2>
 
           {course.modules?.map((mod, i) => (
             <div key={i} className="mb-6">
-
-              {/* Module Title */}
-              <h3 className="font-semibold text-lg mb-2 text-blue-700">
+              <h3 className="font-semibold text-lg mb-2">
                 {i + 1}. {mod.moduleTitle}
               </h3>
 
-              {/* Lecture List */}
               <ul className="space-y-2">
                 {mod.lectures.map((lec, j) => (
-                  <li
-                    key={j}
-                    className="p-3 bg-gray-100 border border-gray-200 rounded-lg hover:bg-gray-200 flex justify-between text-sm cursor-pointer transition"
-                  >
-                    <span>{j + 1}. {lec.title}</span>
-                    <span className="text-gray-600">⏳ {lec.duration}</span>
+                  <li className="p-3 bg-gray-100 rounded">
+                    {j + 1}. {lec.title} • {lec.duration}
                   </li>
                 ))}
               </ul>
-
-              <hr className="mt-4 opacity-30" />
             </div>
           ))}
 
