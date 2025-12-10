@@ -10,11 +10,14 @@ const EditCourse = () => {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  
   // Fetch course on mount
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}course/${id}`);
+        
+        const res = await axios.get(`${BASE_URL}/course/${id}`);
+        
         setCourse(res.data);
         setLoading(false);
       } catch (err) {

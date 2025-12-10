@@ -67,8 +67,7 @@ const Profile = () => {
             <InfoCard label="Email" value={user.emailId} />
             <InfoCard label="Mobile" value={user.mobile} />
             <InfoCard label="State" value={user.state} />
-            <InfoCard label="Package" value={(user.packages || []).join(", ")} />
-  
+              
           </div>
 
           {/* BUTTONS */}

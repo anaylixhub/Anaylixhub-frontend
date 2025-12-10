@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CourseCard from "../components/CourseCard";
-import { Link } from "react-router-dom";
 import { BASE_URL } from "../utils/constants.jsx";
 
 const Courses = () => {

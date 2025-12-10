@@ -4,9 +4,9 @@ import AboutUs from "./AboutUs";
 
 const Home = () => {
   return (
-    <div>
+    <div className="-mt-20">
 
-    <div className="min-h-screen w-full bg-white text-gray-900 overflow-x-hidden">
+    <div className="min-h-screen w-full bg-white text-gray-900 overflow-x-hidden ">
       {/* HERO SECTION */}
       <section className="relative w-full min-h-screen flex items-center bg-gradient-to-br from-yellow-100 via-white to-blue-100">
         {/* Soft Overlay */}

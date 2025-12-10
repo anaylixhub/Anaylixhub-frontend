@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BASE_URL } from "../utils/constants";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -8,13 +9,45 @@ const ContactUs = () => {
     comment: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [responseMsg, setResponseMsg] = useState("");
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // SUBMIT FORM → SEND TO BACKEND
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Data:", formData);
+    setLoading(true);
+    setResponseMsg("");
+
+    try {
+      const res = await fetch(`${BASE_URL}/contact/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          website: formData.website,
+          message: formData.comment,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setResponseMsg("Your message has been sent successfully!");
+        setFormData({ name: "", email: "", website: "", comment: "" });
+      } else {
+        setResponseMsg(data.error || "Failed to send message.");
+      }
+    } catch (err) {
+      console.log(err);
+      setResponseMsg("Server error. Try again later.");
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -46,10 +79,8 @@ const ContactUs = () => {
               ✉️
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">
-                E-mail Address
-              </h3>
-              <p className="text-gray-700 mt-1">anaylixhub@gmail.com</p>
+              <h3 className="text-xl font-semibold text-gray-900">E-mail Address</h3>
+              <p className="text-gray-700 mt-1">support@anaylixhub.in</p>
             </div>
           </div>
         </div>
@@ -58,8 +89,7 @@ const ContactUs = () => {
         <div className="w-full bg-white rounded-xl shadow-lg border p-10">
           <h2 className="text-3xl font-bold text-gray-900">Send Us Message</h2>
           <p className="text-gray-500 mt-1">
-            Your email address will not be published. Required fields are marked
-            *
+            Your email address will not be published. Required fields are marked *
           </p>
 
           <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
@@ -70,6 +100,7 @@ const ContactUs = () => {
               value={formData.comment}
               onChange={handleChange}
               className="w-full h-40 border rounded-lg p-3 focus:ring-2 focus:ring-purple-300 outline-none"
+              required
             />
 
             {/* Name / Email / Website */}
@@ -81,6 +112,7 @@ const ContactUs = () => {
                 value={formData.name}
                 onChange={handleChange}
                 className="border rounded-lg p-3 focus:ring-2 focus:ring-purple-300 outline-none"
+                required
               />
 
               <input
@@ -90,12 +122,13 @@ const ContactUs = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="border rounded-lg p-3 focus:ring-2 focus:ring-purple-300 outline-none"
+                required
               />
 
               <input
                 name="website"
                 type="text"
-                placeholder="Website *"
+                placeholder="Website"
                 value={formData.website}
                 onChange={handleChange}
                 className="border rounded-lg p-3 focus:ring-2 focus:ring-purple-300 outline-none"
@@ -105,11 +138,19 @@ const ContactUs = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white px-10 py-3 rounded-full shadow-lg hover:opacity-90 transition-all text-lg font-semibold"
+              disabled={loading}
+              className="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white px-10 py-3 rounded-full shadow-lg hover:opacity-90 transition-all text-lg font-semibold disabled:opacity-50"
             >
-              Submit Now →
+              {loading ? "Sending..." : "Submit Now →"}
             </button>
           </form>
+
+          {/* Response Message */}
+          {responseMsg && (
+            <p className="mt-4 text-lg font-medium text-green-600">
+              {responseMsg}
+            </p>
+          )}
         </div>
       </div>
     </div>

@@ -11,23 +11,18 @@ const CourseDetails = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
+  console.log("user1 :", user);
 
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isUserSubscribed, setIsUserSubscribed] = useState(false);
+  const startPayment = useRazorpayPayment();  
 
   // Auto payment after signup
   const autoPay = new URLSearchParams(location.search).get("startPayment");
 
   // Prevent Razorpay from triggering twice
   const paymentStarted = useRef(false);
-
-  // Hook for payment
-  const startPayment = useRazorpayPayment(
-    user,
-    () => navigate("/course"),                      // success → go to all courses
-    () => navigate("/course?payment_failed=true")   // failure
-  );
 
   // -------------------------------------------------------
   // VERIFY SUBSCRIPTION
@@ -68,22 +63,34 @@ const CourseDetails = () => {
   // BUY BUTTON CLICK
   // -------------------------------------------------------
   const handleBuy = () => {
-    if (!user) {
-      navigate("/signup");
-      return;
-    }
-    startPayment();
-  };
+  if (!user) {
+    navigate(`/signup?course=${id}`); // better UX
+    return;
+  }
+
+  startPayment(
+    user,
+    () => navigate("/payment-status?success=true"),
+    () => navigate("/payment-status?success=false")
+  );
+};
 
   // -------------------------------------------------------
   // AUTO PAYMENT AFTER SIGNUP
   // -------------------------------------------------------
   useEffect(() => {
-    if (autoPay && user && !isUserSubscribed && !paymentStarted.current) {
-      paymentStarted.current = true;  // avoid double popup
-      startPayment();
-    }
-  }, [autoPay, user, isUserSubscribed, startPayment]);
+  if (autoPay && user && !isUserSubscribed && !paymentStarted.current) {
+
+    paymentStarted.current = true;
+
+    startPayment(
+      user,
+      () => navigate("/payment-status?success=true"),
+      () => navigate("/payment-status?success=false")
+    );
+  }
+}, [autoPay, user, isUserSubscribed]);
+
 
   // -------------------------------------------------------
   // LOADING STATES

@@ -1,25 +1,23 @@
+// useRazorpayPayment.js
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 
-const useRazorpayPayment = (user, onSuccess, onFail) => {
-  return async function startPayment() {
-
+const useRazorpayPayment = () => {
+  return async function startPayment(user, onSuccess, onFail) {
     if (!user) {
       console.log("User not logged in");
       return;
     }
 
     try {
-      // 1️⃣ Create order from backend
       const res = await axios.post(
         BASE_URL + "/payment/create",
         {},
         { withCredentials: true }
       );
 
-      const { orderId, amount, currency, keyId, notes } = res.data;
+      const { orderId, amount, currency, keyId } = res.data;
 
-      // 2️⃣ Razorpay checkout options
       const options = {
         key: keyId,
         amount,
@@ -29,29 +27,24 @@ const useRazorpayPayment = (user, onSuccess, onFail) => {
         order_id: orderId,
 
         prefill: {
-          name: notes.fullName,
+          name: user.fullName,
           email: user.emailId,
           contact: user.mobile,
         },
 
-        handler: function (response) {
-          console.log("Payment Success:", response);
-          onSuccess(); // notify frontend success
+        handler: (response) => {
+          onSuccess();
         },
 
-        modal: { ondismiss: onFail },
-
-        theme: { color: "#3b82f6" },
+        modal: {
+          ondismiss: onFail,
+        },
       };
 
-      // 3️⃣ Open Razorpay window
       const rzp = new window.Razorpay(options);
-
-      // If payment fails →
       rzp.on("payment.failed", onFail);
-
       rzp.open();
-      
+
     } catch (err) {
       console.log("Payment Error:", err);
       onFail();

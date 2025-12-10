@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const AboutUs = ()=> {
   return (
@@ -88,13 +89,7 @@ const AboutUs = ()=> {
               <li>Career guidance and portfolio support</li>
             </ul>
           </div>
-          <div className="bg-gray-100 p-6 rounded-2xl shadow-md">
-            <img
-              src="https://images.unsplash.com/photo-1584697964194-bf134a22c652?auto=format&fit=crop&w=900&q=60"
-              alt="Analytics training"
-              className="rounded-xl w-full"
-            />
-          </div>
+        
         </div>
       </section>
 
@@ -104,9 +99,9 @@ const AboutUs = ()=> {
         <p className="max-w-2xl mx-auto text-lg mb-8">
           Be part of a thriving community of learners advancing with content related skills. Start your journey with AnaylixHub today.
         </p>
-        <button className="px-10 py-3 bg-yellow-400 text-gray-900 rounded-full font-semibold shadow-lg hover:bg-yellow-300 transition">
+        <Link to={"/course"} className="px-10 py-3 bg-yellow-400 text-gray-900 rounded-full font-semibold shadow-lg hover:bg-yellow-300 transition">
           Explore Courses
-        </button>
+        </Link>
       </section>
       <div className="p-5 bg-white"></div>
     </div>

@@ -1,5 +1,5 @@
-import React, { useState} from "react";
-import {useDispatch} from "react-redux"
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { addUser } from "../../utils/userSlice.jsx";
@@ -13,6 +13,7 @@ const LogIn = () => {
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(""); // ⭐ NEW
 
   const togglePassword = () => {
     setShowPass(!showPass);
@@ -20,9 +21,10 @@ const LogIn = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    setErrorMsg(""); // Clear old errors
 
     if (!emailId || !password) {
-      alert("Please enter both email and password");
+      setErrorMsg("Please enter both email and password");
       return;
     }
 
@@ -31,29 +33,20 @@ const LogIn = () => {
 
       const res = await axios.post(
         BASE_URL + "/auth/login",
-        {
-          emailId,
-          password,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        { emailId, password },
+        { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
 
-      console.log("hijjh");
       dispatch(addUser(res.data));
-
-      navigate("/profile"); // redirect to home
+      navigate("/profile");
 
     } catch (err) {
       console.error(err);
-
-      alert(err.response?.data?.message || "Invalid Credentials");
+      const message =
+        err.response?.data?.message || "Invalid credentials. Please try again.";
+      setErrorMsg(message); // ⭐ Show backend error
     } finally {
       setLoading(false);
-      setEmailId("");
-      setPassword("");
     }
   };
 
@@ -65,13 +58,17 @@ const LogIn = () => {
       </div>
 
       <div className="w-full max-w-5xl mt-12 px-6">
-        <h2 className="text-3xl font-semibold text-gray-900">
-          Hey! Welcome Back
-        </h2>
-
-        <p className="text-gray-600 mt-2">Login to your Account to Continue</p>
+        <h2 className="text-3xl font-semibold text-gray-900">Hey! Welcome Back</h2>
+        <p className="text-gray-600 mt-2">Login to your account to continue</p>
 
         <form className="mt-8 max-w-md">
+
+          {/* Error Message */}
+          {errorMsg && (
+            <p className="bg-red-100 text-red-700 px-4 py-2 rounded-lg mb-4">
+              {errorMsg}
+            </p>
+          )}
 
           {/* Email */}
           <label htmlFor="email" className="block font-medium text-gray-800">
@@ -82,7 +79,10 @@ const LogIn = () => {
             id="email"
             placeholder="Enter your Mail/Id"
             value={emailId}
-            onChange={(e) => setEmailId(e.target.value)}
+            onChange={(e) => {
+              setEmailId(e.target.value);
+              setErrorMsg(""); // clear error when typing
+            }}
             className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-300"
           />
 
@@ -97,7 +97,10 @@ const LogIn = () => {
               id="password"
               placeholder="Enter Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setErrorMsg(""); // clear error when typing
+              }}
               className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-300"
             />
 
@@ -111,9 +114,7 @@ const LogIn = () => {
           </div>
 
           {/* Forgot Password */}
-          <p className="text-blue-600 text-sm mt-2 cursor-pointer">
-            Forgot Password?
-          </p>
+          <p className="text-blue-600 text-sm mt-2 cursor-pointer">Forgot Password?</p>
 
           {/* Sign In Button */}
           <button
@@ -129,6 +130,14 @@ const LogIn = () => {
             Don't have an account?
             <Link to="/signup" className="text-blue-600 ml-1">
               Sign Up
+            </Link>
+          </p>
+
+          {/* Forget Password */}
+          <p className="mt-4 text-gray-700">
+            Forget Password?
+            <Link to="/forgot-password" className="text-blue-600 ml-1">
+              Reset Here
             </Link>
           </p>
         </form>

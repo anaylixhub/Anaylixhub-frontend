@@ -22,8 +22,12 @@ import PricingPolicy from './pages/legal/PricingPolicy.jsx';
 import AddCourse from './admin/AddCourse.jsx';
 import CourseDetails from './pages/CourseDetails.jsx';
 import Learning from './pages/Learning.jsx';
-import EditCourse from './pages/EditCourse.jsx';
+import EditCourse from './admin/EditCourse.jsx';
 import PaymentStart from './pages/PaymentStart.jsx';
+import PaymentStatus from './pages/PaymentStatus.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import VerifyOtp from './pages/VerifyOtp.jsx';
+import ResetPassword from './pages/ResetPassword.jsx';
 
 export default function App() {
   return (
@@ -47,6 +51,11 @@ export default function App() {
             <Route path="/addcourse" element={<AddCourse />} />
             <Route path="/editcourse/:id" element={<EditCourse />} />
             <Route path="/payment-start" element={<PaymentStart />} />
+            <Route path="/payment-status" element={<PaymentStatus />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify-otp" element={<VerifyOtp />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
 
           <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/termsCondition" element={<TermsCondition />} />

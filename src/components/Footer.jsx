@@ -62,7 +62,7 @@ const Footer = ()=>{
             <Phone size={18} /> +91 7979824380
           </p>
           <p className="flex items-center gap-2 text-gray-300">
-            <Mail size={18} /> anaylixhub@gmail.com
+            <Mail size={18} /> support@anaylixhub.in
           </p>
         </div>
       </div>
