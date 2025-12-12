@@ -20,7 +20,7 @@ import TermsCondition from './pages/legal/TermsCondition.jsx';
 import LegalDocuments from './pages/legal/LegalDocuments.jsx';
 import PricingPolicy from './pages/legal/PricingPolicy.jsx';
 import AddCourse from './admin/AddCourse.jsx';
-import CourseDetails from './pages/CourseDetails.jsx';
+import CourseDetails from './pages/CourseDetail.jsx';
 import Learning from './pages/Learning.jsx';
 import EditCourse from './admin/EditCourse.jsx';
 import PaymentStart from './pages/PaymentStart.jsx';
