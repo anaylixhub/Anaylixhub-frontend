@@ -1,13 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants.jsx";
 import { useSelector } from "react-redux";
-import useRazorpayPayment  from "../hooks/useRazorpayPayment";
+import useRazorpayPayment  from "../hooks/useRazorpayPayment.js";
 
 const CourseDetails = () => {
   const { id } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
@@ -17,12 +16,6 @@ const CourseDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isUserSubscribed, setIsUserSubscribed] = useState(false);
   const startPayment = useRazorpayPayment();  
-
-  // Auto payment after signup
-  const autoPay = new URLSearchParams(location.search).get("startPayment");
-
-  // Prevent Razorpay from triggering twice
-  const paymentStarted = useRef(false);
 
   // -------------------------------------------------------
   // VERIFY SUBSCRIPTION
